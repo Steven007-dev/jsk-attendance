@@ -157,6 +157,7 @@ class AppStore extends ChangeNotifier {
     }
     normalized['settings'] = _map(source['settings']);
     normalized['ui'] = <String, dynamic>{
+      'theme': 'dark',
       'page': null,
       'teacherBatch': null,
       'teacherSubject': null,
