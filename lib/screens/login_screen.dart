@@ -127,15 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: BoxDecoration(
                                 color: colors.surface,
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border(
-                                  top: const BorderSide(
-                                    color: AppTheme.marigold,
-                                    width: 4,
-                                  ),
-                                  left: BorderSide(color: line),
-                                  right: BorderSide(color: line),
-                                  bottom: BorderSide(color: line),
-                                ),
+                                border: Border.all(color: line),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withValues(alpha: .34),
@@ -144,169 +136,213 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ],
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                  22,
-                                  40,
-                                  22,
-                                  22,
-                                ),
-                                child: Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 62,
-                                            height: 62,
-                                            padding: const EdgeInsets.all(4),
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              shape: BoxShape.circle,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(19),
+                                child: Stack(
+                                  children: [
+                                    const Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: SizedBox(
+                                        height: 4,
+                                        child: DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                AppTheme.marigold,
+                                                AppTheme.coral,
+                                              ],
                                             ),
-                                            child: ClipOval(
-                                              child: Image.asset(
-                                                'assets/jsk_logo.png',
-                                                fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                        22,
+                                        40,
+                                        22,
+                                        22,
+                                      ),
+                                      child: Form(
+                                        key: _formKey,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 62,
+                                                  height: 62,
+                                                  padding: const EdgeInsets.all(
+                                                    4,
+                                                  ),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                        color: Colors.white,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                  child: ClipOval(
+                                                    child: Image.asset(
+                                                      'assets/jsk_logo.png',
+                                                      fit: BoxFit.contain,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 14),
+                                                Expanded(
+                                                  child: Text(
+                                                    'JSK Institute',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: theme
+                                                        .textTheme
+                                                        .headlineSmall
+                                                        ?.copyWith(
+                                                          fontSize: 25,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 4),
+                                                const Icon(
+                                                  Icons.local_florist_rounded,
+                                                  color: Color(0xFFE8749A),
+                                                  size: 23,
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 13),
+                                            Text(
+                                              'ATTENDANCE REGISTER',
+                                              style: TextStyle(
+                                                color: colors.onSurfaceVariant,
+                                                fontFamily: 'monospace',
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                letterSpacing: 2,
                                               ),
                                             ),
-                                          ),
-                                          const SizedBox(width: 14),
-                                          Expanded(
-                                            child: Text(
-                                              'JSK Institute',
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: theme
-                                                  .textTheme
-                                                  .headlineSmall
-                                                  ?.copyWith(
-                                                    fontSize: 25,
-                                                    fontWeight: FontWeight.w700,
+                                            const SizedBox(height: 26),
+                                            if (store.rows('users').isEmpty &&
+                                                store.cloudMessage != null) ...[
+                                              _CloudMessage(
+                                                message: store.cloudMessage!,
+                                                connected:
+                                                    store.onlineSyncConfigured,
+                                              ),
+                                              const SizedBox(height: 16),
+                                            ],
+                                            _FieldLabel('Email', color: colors),
+                                            const SizedBox(height: 7),
+                                            TextFormField(
+                                              controller: _email,
+                                              keyboardType:
+                                                  TextInputType.emailAddress,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              autofillHints: const [
+                                                AutofillHints.username,
+                                                AutofillHints.email,
+                                              ],
+                                              decoration: const InputDecoration(
+                                                hintText: 'you@jsk.edu',
+                                              ),
+                                              validator: (value) =>
+                                                  (value == null ||
+                                                      value.trim().isEmpty)
+                                                  ? 'Enter your email address'
+                                                  : null,
+                                            ),
+                                            const SizedBox(height: 16),
+                                            _FieldLabel(
+                                              'Password',
+                                              color: colors,
+                                            ),
+                                            const SizedBox(height: 7),
+                                            TextFormField(
+                                              controller: _password,
+                                              obscureText: _hidePassword,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              onFieldSubmitted: (_) =>
+                                                  _signIn(),
+                                              autofillHints: const [
+                                                AutofillHints.password,
+                                              ],
+                                              decoration: InputDecoration(
+                                                suffixIcon: IconButton(
+                                                  tooltip: _hidePassword
+                                                      ? 'Show password'
+                                                      : 'Hide password',
+                                                  onPressed: () => setState(
+                                                    () => _hidePassword =
+                                                        !_hidePassword,
                                                   ),
+                                                  icon: Icon(
+                                                    _hidePassword
+                                                        ? Icons
+                                                              .visibility_outlined
+                                                        : Icons
+                                                              .visibility_off_outlined,
+                                                  ),
+                                                ),
+                                              ),
+                                              validator: (value) =>
+                                                  (value == null ||
+                                                      value.isEmpty)
+                                                  ? 'Enter your password'
+                                                  : null,
                                             ),
-                                          ),
-                                          const SizedBox(width: 4),
-                                          const Icon(
-                                            Icons.local_florist_rounded,
-                                            color: Color(0xFFE8749A),
-                                            size: 23,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 13),
-                                      Text(
-                                        'ATTENDANCE REGISTER',
-                                        style: TextStyle(
-                                          color: colors.onSurfaceVariant,
-                                          fontFamily: 'monospace',
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 2,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 26),
-                                      if (store.rows('users').isEmpty &&
-                                          store.cloudMessage != null) ...[
-                                        _CloudMessage(
-                                          message: store.cloudMessage!,
-                                          connected: store.onlineSyncConfigured,
-                                        ),
-                                        const SizedBox(height: 16),
-                                      ],
-                                      _FieldLabel('Email', color: colors),
-                                      const SizedBox(height: 7),
-                                      TextFormField(
-                                        controller: _email,
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        textInputAction: TextInputAction.next,
-                                        autofillHints: const [
-                                          AutofillHints.username,
-                                          AutofillHints.email,
-                                        ],
-                                        decoration: const InputDecoration(
-                                          hintText: 'you@jsk.edu',
-                                        ),
-                                        validator: (value) =>
-                                            (value == null ||
-                                                value.trim().isEmpty)
-                                            ? 'Enter your email address'
-                                            : null,
-                                      ),
-                                      const SizedBox(height: 16),
-                                      _FieldLabel('Password', color: colors),
-                                      const SizedBox(height: 7),
-                                      TextFormField(
-                                        controller: _password,
-                                        obscureText: _hidePassword,
-                                        textInputAction: TextInputAction.done,
-                                        onFieldSubmitted: (_) => _signIn(),
-                                        autofillHints: const [
-                                          AutofillHints.password,
-                                        ],
-                                        decoration: InputDecoration(
-                                          suffixIcon: IconButton(
-                                            tooltip: _hidePassword
-                                                ? 'Show password'
-                                                : 'Hide password',
-                                            onPressed: () => setState(
-                                              () => _hidePassword =
-                                                  !_hidePassword,
+                                            const SizedBox(height: 20),
+                                            _GradientSignInButton(
+                                              busy: _busy,
+                                              onPressed: _busy ? null : _signIn,
                                             ),
-                                            icon: Icon(
-                                              _hidePassword
-                                                  ? Icons.visibility_outlined
-                                                  : Icons
-                                                        .visibility_off_outlined,
+                                            const SizedBox(height: 20),
+                                            Divider(color: line, height: 1),
+                                            const SizedBox(height: 17),
+                                            Text(
+                                              'DEMO ACCOUNTS',
+                                              style: TextStyle(
+                                                color: colors.onSurfaceVariant,
+                                                fontFamily: 'monospace',
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                letterSpacing: 1.4,
+                                              ),
                                             ),
-                                          ),
+                                            const SizedBox(height: 11),
+                                            for (final account
+                                                in _demoAccounts) ...[
+                                              _DemoAccountButton(
+                                                account: account,
+                                                onTap: () =>
+                                                    _useDemoAccount(account),
+                                                line: line,
+                                              ),
+                                              const SizedBox(height: 8),
+                                            ],
+                                            if (store.cloudMessage != null &&
+                                                store
+                                                    .rows('users')
+                                                    .isNotEmpty) ...[
+                                              const SizedBox(height: 7),
+                                              _CloudMessage(
+                                                message: store.cloudMessage!,
+                                                connected:
+                                                    store.onlineSyncConfigured,
+                                              ),
+                                            ],
+                                          ],
                                         ),
-                                        validator: (value) =>
-                                            (value == null || value.isEmpty)
-                                            ? 'Enter your password'
-                                            : null,
                                       ),
-                                      const SizedBox(height: 20),
-                                      _GradientSignInButton(
-                                        busy: _busy,
-                                        onPressed: _busy ? null : _signIn,
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Divider(color: line, height: 1),
-                                      const SizedBox(height: 17),
-                                      Text(
-                                        'DEMO ACCOUNTS',
-                                        style: TextStyle(
-                                          color: colors.onSurfaceVariant,
-                                          fontFamily: 'monospace',
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 1.4,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 11),
-                                      for (final account in _demoAccounts) ...[
-                                        _DemoAccountButton(
-                                          account: account,
-                                          onTap: () => _useDemoAccount(account),
-                                          line: line,
-                                        ),
-                                        const SizedBox(height: 8),
-                                      ],
-                                      if (store.cloudMessage != null &&
-                                          store.rows('users').isNotEmpty) ...[
-                                        const SizedBox(height: 7),
-                                        _CloudMessage(
-                                          message: store.cloudMessage!,
-                                          connected: store.onlineSyncConfigured,
-                                        ),
-                                      ],
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
