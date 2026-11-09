@@ -1,33 +1,20 @@
-# JSK Attendance
+# JSK Attendance — notification work
 
-Native Flutter application for Android and iOS. The interface and app logic are implemented in Dart; this project does not embed the original webpage in a WebView.
+This branch contains the Flutter preview app that produced the Android APK, plus the current Firebase Hosting and Supabase source used by the notification flow.
 
-## Run
+- Flutter app: repository root (`lib/`, `android/`, `ios/`, `pubspec.yaml`).
+- Firebase Hosting webpage: `web-hosting/www/` with its hosting configuration.
+- Supabase Edge Functions and migrations: `supabase/`.
+
+## Build the Android APK
 
 ```sh
 flutter pub get
-flutter run
+flutter build apk --release
 ```
 
-The app keeps the existing JSK Supabase snapshot format (`app_data`, row `main_state`, JSON column `content`) and local storage key. The original public client configuration is used by default. Build-time overrides are available with `SUPABASE_URL` and `SUPABASE_ANON_KEY` Dart defines.
+## Important setup
 
-```sh
-flutter run \
-  --dart-define=SUPABASE_URL=your-project-url \
-  --dart-define=SUPABASE_ANON_KEY=your-publishable-key
-```
+Signing keys and local signing properties are intentionally not included. Configure signing locally using `android/key.properties.example`. Supabase and Firebase server credentials belong in their service secret settings and are not stored in this repository.
 
-## Native setup
-
-- Android uses package ID `com.jsk.attendance` and includes the matching Firebase client configuration for OneSignal notifications.
-- iOS uses bundle ID `com.jsk.attendance`. Configure the matching APNs credentials in OneSignal and the Apple developer account before testing push notifications on a device.
-- Staff attendance uses foreground location and the geofence values stored in the shared snapshot.
-
-## Build
-
-```sh
-flutter build apk
-flutter build ios
-```
-
-iOS builds require macOS and Xcode.
+The existing `main` branch is unchanged; this branch is the notification development source snapshot.

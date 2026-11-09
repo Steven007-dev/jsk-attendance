@@ -31,7 +31,6 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-**/build/
 /coverage/
 
 # Symbolication related
@@ -44,6 +43,35 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/key.properties
+*.jks
+*.keystore
 
 # Widget Preview related
 .widget_preview/
+
+## Local-only build state and credentials
+**/.gradle/
+**/.gradle-cache/
+**/.dart_tool/
+**/build/
+**/.flutter-tool-appdata/
+**/.flutter-tool-state/
+**/work/
+**/private-source-backup/
+**/node_modules/
+**/.firebase/
+**/.npm-cache*/
+**/key.properties
+**/local.properties
+*.jks
+*.keystore
+*.apk
+*.aab
+*.p8
+*.p12
+*.pem
+*.mobileprovision
+*.cer
+*.bak
+*.zip

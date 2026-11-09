@@ -1,0 +1,8 @@
+{
+  "appId": "com.jsk.attendance",
+  "appName": "JSK Attendance",
+  "webDir": "www",
+  "ios": {
+    "handleApplicationNotifications": false
+  }
+}

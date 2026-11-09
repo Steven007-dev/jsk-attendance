@@ -26,12 +26,16 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Take a profile photo to display on your JSK Attendance account.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location is used to verify staff check-in and check-out within the institute attendance area.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Select a profile photo to display on your JSK Attendance account.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
 	</array>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location is used to verify staff check-in and check-out within the institute attendance area.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
